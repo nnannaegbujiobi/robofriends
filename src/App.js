@@ -9,9 +9,15 @@ class App extends Component {
   constructor() {
     super()
      this.state = {
-      robots: robots,
+      robots: [],
       searchfield: ''
     }
+  }
+// api set up using lifecycle hooks to make http calls 
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response=>  response.json())
+    .then(users=> this.setState({robots: users}));
   }
 
   onSearchChange = (event) => {
@@ -23,17 +29,17 @@ class App extends Component {
     const filteredRobots = this.state.robots.filter(robots =>{
       return robots.name.toLowerCase().includes(this.state.searchfield.toLowerCase())
     })
+
+
     return (
-   
-    <div className='tc'>
-    <h1>RoboFriends</h1>
-    <SearchBox searchChange={this.onSearchChange}/>
-    <CardList robots={filteredRobots}/>
-    </div>
 
-  );
-  }
-
+      <div className='tc'>
+        <h1 className='f1'>RoboFriends</h1>
+        <SearchBox searchChange={this.onSearchChange}/>
+        <CardList robots={filteredRobots}/>
+      </div>
+     );
+   }
 }
 
 
